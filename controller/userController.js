@@ -3,15 +3,27 @@ const validator =require ('@hapi/joi')
 const createuser =async(req,res)=>{
     try {
         const schema = validator.object({
-            email:validator.string().email().min(7).required(),
-            Name:validator.string().min(3).required().regex(/^[A-Za-z]+(?: [A-Za-z]+)*$/)
-            .messages({
-              'string.pattern.base': 'Name must only contain',
-              'string.empty': 'Name cannot be empty',
-            }),
-            password:validator.string().required().min(4).max(8),
-            favouriteHC:validator.required().valid('low cut','skin punk','afro')
-        })
+            email: validator.string().email().min(7).required(),
+            Name: validator
+              .string()
+              .min(3)
+              .required()
+              .regex(/^[A-Za-z]+(?: [A-Za-z]+)*$/)
+              .messages({
+                "string.pattern.base": "Name must only contain",
+                "string.empty": "Name cannot be empty",
+              }),
+            password: validator
+              .string()
+              .required()
+              .min(8)
+              .max(50)
+              .regex(/^(?=.[a-z])(?=.[A-Z])(?=.[0-9])(?=.[!@#$%^&(),.?":{}|<>])[A-Za-z0-9!@#$%^&(),.?":{}|<>]{8,50}$/)    .messages({
+                "string.pattern.base": "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character",
+                "string.empty": "Password cannot be empty",
+              }),
+            favouriteHC: validator.required().valid("low cut", "skin punk", "afro"),
+          });
         const{error}=schema.validate(req.body)
         if(error){
         return res.status(400).json(error.details[0].message)
