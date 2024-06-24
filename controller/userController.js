@@ -3,9 +3,6 @@ const validator = require("@hapi/joi");
 
 const createuser = async (req, res) => {
   try {
-    const passwordRegex = new RegExp(
-      '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z0-9!@#$%^&*(),.?":{}|<>]{8,50}$'
-    );
     const schema = validator.object({
       email: validator.string().email().min(7).required(),
       Name: validator
@@ -22,7 +19,7 @@ const createuser = async (req, res) => {
         .required()
         .min(8)
         .max(50)
-        .regex(passwordRegex),
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z0-9!@#$%^&*(),.?":{}|<>]{8,50}$/),
       favouriteHC: validator.required().valid("low cut", "skin punk", "afro"),
     });
     const { error } = schema.validate(req.body);
