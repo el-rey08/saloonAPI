@@ -28,9 +28,7 @@ const createuser = async (req, res) => {
     const { error } = schema.validate(req.body);
     if (error) {
       return res.status(400).json({
-        error: error.details[0].message,
-        message:
-          "Password must contain upper case, lower case, a number and a string",
+        error: error.details[0].message
       });
     }
     const { Name, email, password, favouriteHC } = req.body;
